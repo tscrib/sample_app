@@ -1,4 +1,6 @@
 # Ruby on Rails Tutorial: sample application
+# 
+# Author: Tim Scribner
 
 This is the sample application for
 [*Ruby on Rails Tutorial: Learn Rails by Example*](http://railstutorial.org/)
