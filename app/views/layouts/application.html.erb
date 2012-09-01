@@ -9,27 +9,16 @@
 		<%= javascript_include_tag "application" %>
 		<%= csrf_meta_tags %>
 
-		<!--[if lt IE 9]>
-		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-		![endif]-->
+		<!-- ruby partial. Like calling a function within an HMTL file-->
+		<%= render 'layouts/shim'%>
+		
 	</head>
 	<body>
-		<header class="navbar navbar-fixed-top">
-	      <div class="navbar-inner">
-	        <div class="container">
-	          <%= link_to "sample app", '#', id: "logo" %>
-	          <nav>
-	            <ul class="nav pull-right">
-	              <li><%= link_to "Home",    '#' %></li>
-	              <li><%= link_to "Help",    '#' %></li>
-	              <li><%= link_to "Sign in", '#' %></li>
-	            </ul>
-	          </nav>
-	        </div>
-	      </div>
-	    </header>
+		<%= render 'layouts/header'%>
+		
 	    <div class="container">
 			<%= yield %>
+			<%= render 'layouts/footer'%>
 		</div>
 	</body>
 </html>
