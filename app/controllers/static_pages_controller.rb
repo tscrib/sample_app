@@ -1,3 +1,4 @@
+# static pages controller inherits from application controller
 
 class StaticPagesController < ApplicationController
   def home
