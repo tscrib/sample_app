@@ -1,8 +1,15 @@
 SampleApp::Application.routes.draw do
 
+  # The priority is based upon order of creation:
+  # first created -> highest priority.
+
+  # Resources
+  # These automatically create the seven HTTP actions:
+  # index, new, create, show, edit, update, destroy (unless limited by only:)
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
 
+  # Custom routes
   root to: 'static_pages#home'
 
   match '/signup', to: 'users#new'
@@ -12,8 +19,6 @@ SampleApp::Application.routes.draw do
   match '/about',   to: 'static_pages#about'
   match '/contact', to: 'static_pages#contact'
 
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
 
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
