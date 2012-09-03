@@ -1,9 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.8'
-gem 'bootstrap-sass', '2.0.4'
-gem 'pg', '0.12.2'
-gem 'bcrypt-ruby', '3.0.1'
+gem 'rails', '3.2.8'            # all of rails
+gem 'bootstrap-sass', '2.0.4'   # using bootstrap styling
+gem 'pg', '0.12.2'              # psql, the db
+gem 'bcrypt-ruby', '3.0.1'      # to encrypt password
+gem 'faker', '1.0.1'            # to create fake db entries
+gem 'will_paginate', '3.0.3'    # pagination library
+gem 'bootstrap-will_paginate', '0.0.6' # allows pagination to use bootstrap css
 
 group :development do
   gem 'rspec-rails', '2.10.0'
