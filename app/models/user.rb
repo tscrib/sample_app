@@ -20,6 +20,9 @@ class User < ActiveRecord::Base
 	validates :email, presence: true, 
 			format: { with: VALID_EMAIL_REGEX }, 
 			uniqueness: { case_sensitive: false}
-	validates :password, presence: true, length: { minimum: 6 }
+	# Removed "presence: true" validator. This is a hack 
+	#   to make the error output more readable.
+	#   See config/locales/en.yml for the hack
+	validates :password, length: { minimum: 6 }
 	validates :password_confirmation, presence: true
 end
