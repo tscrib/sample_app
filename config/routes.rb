@@ -8,6 +8,7 @@ SampleApp::Application.routes.draw do
   # index, new, create, show, edit, update, destroy (unless limited by only:)
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
+  resources :microposts, only: [:create, :destroy]
 
   # Custom routes
   root to: 'static_pages#home'
