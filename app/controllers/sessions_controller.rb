@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
 		if user && user.authenticate(params[:password])
 			session[:user_id] = user.id
 			sign_in user
-			redirect_to user
+			redirect_back_or user
 		else
 			# Flash.now is used since this is a rendered page. It will
 			# persist on other pages if just flash was used.
