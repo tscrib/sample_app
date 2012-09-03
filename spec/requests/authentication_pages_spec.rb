@@ -4,11 +4,22 @@ describe "Authentication" do
 
 	subject { page }
 
+	# local variables
+	let(:user) { FactoryGirl.create(:user) }
+	let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
+	let(:non_admin) { FactoryGirl.create(:user) }
+	let(:admin) { FactoryGirl.create(:admin) }
+
 	describe "signin page" do
 		before { visit signin_path }
 
 		it { should have_selector('h1',    text: 'Sign in') }
 		it { should have_selector('title', text: 'Sign in') }
+
+		describe "not signed in" do
+			it { should_not have_link('Profile', href: user_path(user)) }
+			it { should_not have_link('Settings', href: edit_user_path(user)) }
+		end
 
 		describe "signin" do
 
@@ -26,7 +37,7 @@ describe "Authentication" do
 		end
 
 		describe "with valid information" do
-			let(:user) { FactoryGirl.create(:user) }
+			
 			before { sign_in( user ) }
 
 			it { should have_selector('title', text: user.name) }
@@ -46,7 +57,6 @@ describe "Authentication" do
 	describe "authorization" do
 
 		describe "for non-signed-in users" do
-			let(:user) { FactoryGirl.create(:user) }
 
 			describe "in the Users controller" do
 
@@ -69,9 +79,7 @@ describe "Authentication" do
 			describe "when attempting to visit a protected page" do
 				before do
 					visit edit_user_path(user)
-					fill_in "Email",    with: user.email
-					fill_in "Password", with: user.password
-					click_button "Sign in"
+					sign_in( user )
 				end
 
 				describe "after signing in" do
@@ -80,12 +88,22 @@ describe "Authentication" do
 						page.should have_selector('title', text: 'Edit user')
 					end
 				end
+
+				describe "when signing in again" do
+					before do
+						visit signin_path
+						sign_in( user )
+					end
+
+					it "should render the default (profile) page" do
+						page.should have_selector('title', text: user.name) 
+					end
+				end
+
 			end
 		end
 
 		describe "as wrong user" do
-			let(:user) { FactoryGirl.create(:user) }
-			let(:wrong_user) { FactoryGirl.create(:user, email: "wrong@example.com") }
 			before { sign_in user }
 
 			describe "visiting Users#edit page" do
@@ -100,13 +118,19 @@ describe "Authentication" do
 		end
 
 		describe "as non-admin user" do
-			let(:user) { FactoryGirl.create(:user) }
-			let(:non_admin) { FactoryGirl.create(:user) }
-
 			before { sign_in non_admin }
 
 			describe "submitting a DELETE request to the Users#destroy action" do
 				before { delete user_path(user) }
+				specify { response.should redirect_to(root_path) }        
+			end
+		end
+
+		describe "as admin" do
+			before { sign_in admin}
+
+			describe "submit a DELETE request to destroy yourself" do
+				before { delete user_path(admin) }
 				specify { response.should redirect_to(root_path) }        
 			end
 		end

@@ -4,9 +4,7 @@
 
 require 'spec_helper'
 
-#
 # Test for all static pages
-#
 describe "Static pages" do 
 
   subject{ page }

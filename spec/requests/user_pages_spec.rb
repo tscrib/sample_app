@@ -4,11 +4,14 @@ describe "UserPages" do
 
 	subject { page }
 
-	describe "index" do
-		# define local variables
-		let(:user) { FactoryGirl.create(:user) }
-		let(:admin) { FactoryGirl.create(:admin) }
+	# define local variables
+	let(:user) { FactoryGirl.create(:user) }
+	let(:admin) { FactoryGirl.create(:admin) }
+	let(:new_name)  { "New Name" }
+	let(:new_email) { "new@example.com" }
+	let(:submit) { "Create my account" }
 
+	describe "index" do
 		before(:each) do
 			sign_in user
 			visit users_path
@@ -65,7 +68,6 @@ describe "UserPages" do
 	end
 
 	describe "profile page" do
-		let( :user ){ FactoryGirl.create( :user ) }
 		before { visit user_path(user) }
 
 		it { should have_selector('h1',    text: user.name) }
@@ -76,7 +78,7 @@ describe "UserPages" do
 
 		before { visit signup_path }
 
-		let(:submit) { "Create my account" }
+		
 
 		describe "with invalid information" do
 			it "should not create a user" do
@@ -93,10 +95,10 @@ describe "UserPages" do
 
 		describe "with valid information" do
 			before do
-				fill_in "Name",         with: "Example User"
-				fill_in "Email",        with: "user@example.com"
-				fill_in "Password",     with: "foobar"
-				fill_in "Confirmation", with: "foobar"
+				fill_in "Name",         	with: "Example User"
+				fill_in "Email",        	with: "user@example.com"
+				fill_in "Password",     	with: "foobar"
+				fill_in "Confirm Password", with: "foobar"
 			end
 
 			it "should create a user" do
@@ -105,9 +107,9 @@ describe "UserPages" do
 
 			describe "after saving the user" do
 				before { click_button submit }
-				let(:user) { User.find_by_email('user@example.com') }
+				let(:find_user) { User.find_by_email('user@example.com') }
 
-				it { should have_selector('title', text: user.name) }
+				it { should have_selector('title', text: find_user.name) }
 				it { should have_selector('div.alert.alert-success', text: 'Welcome') }
 				it { should have_link( 'Sign out')}
 			end
@@ -115,12 +117,10 @@ describe "UserPages" do
 	end
 
 	describe "edit" do
-		let(:user) { FactoryGirl.create(:user) }
 		before do
 			sign_in user
 			visit edit_user_path(user) 
 		end
-
 
 		describe "page" do
 			it { should have_selector('h1',    text: "Update your profile") }
@@ -135,8 +135,6 @@ describe "UserPages" do
 		end
 
 		describe "with valid information" do
-			let(:new_name)  { "New Name" }
-			let(:new_email) { "new@example.com" }
 			before do
 				fill_in "Name",             with: new_name
 				fill_in "Email",            with: new_email

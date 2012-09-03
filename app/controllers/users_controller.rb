@@ -15,17 +15,25 @@ class UsersController < ApplicationController
 	end
 
 	def new
-		@user = User.new
+		if signed_in?
+			redirect_to root_path
+		else
+			@user = User.new
+		end
 	end
 
 	def create
-		@user = User.new(params[:user])
-		if @user.save
-			sign_in @user
-			flash[:success] = "Welcome to the Sample App!"
-			redirect_to @user
+		if signed_in?
+			redirect_to root_path
 		else
-			render 'new'
+			@user = User.new(params[:user])
+			if @user.save
+				sign_in @user
+				flash[:success] = "Welcome to the Sample App!"
+				redirect_to @user
+			else
+				render 'new'
+			end
 		end
 	end
 
@@ -44,15 +52,20 @@ class UsersController < ApplicationController
 	end
 
 	def destroy
-		User.find(params[:id]).destroy
-		flash[:success] = "User destroyed."
-		redirect_to users_url
+		if current_user == User.find(params[:id])
+			redirect_to root_path
+		else
+			User.find(params[:id]).destroy
+			flash[:success] = "User destroyed."
+			redirect_to users_url
+		end
 	end
 
 
 	# private methods
 	private
 
+	# Provides access to index, edit, update and destroy only if signed in
 	def signed_in_user
 		unless signed_in?
 			store_location
