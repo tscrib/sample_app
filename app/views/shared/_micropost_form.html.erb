@@ -1,7 +1,12 @@
+<!-- Was unsuccessful at adding a javascript counter in the text box -->
+<!-- However, did learn that you can add standard HTML tags after embedded ruby-->
+<!-- See the 'name' field in textarea as an example. -->
+
 <%= form_for(@micropost) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   <div class="field">
-    <%= f.text_area :content, placeholder: "Compose new micropost..." %>
+    <%= f.text_area :content, placeholder: "Compose new micropost...", name: "myTextBlock" %>
+	</textarea>
   </div>
   <%= f.submit "Post", class: "btn btn-large btn-primary" %>
 <% end %>

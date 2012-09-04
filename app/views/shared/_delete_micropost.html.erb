@@ -1,0 +1,10 @@
+<span class="content"><%= wrap(gen_micropost.content) %></span>
+  <span class="timestamp">
+    Posted <%= time_ago_in_words(gen_micropost.created_at) %> ago.
+  </span>
+
+<% if current_user?(gen_micropost.user) %>
+<%= link_to "delete", gen_micropost, method: :delete,
+                                 data: { confirm: "You sure?" },
+                                 title: gen_micropost.content %>
+<% end %>

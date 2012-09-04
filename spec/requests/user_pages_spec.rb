@@ -158,4 +158,26 @@ describe "UserPages" do
 			specify { user.reload.email.should == new_email }
 		end
 	end
+
+
+	describe "home page micropost" do
+		before(:each) do
+			sign_in user
+			visit root_path
+		end
+
+		describe "two count" do
+			let(:mcount) { pluralize(user.microposts.count, "micropost" ) }
+			it{ should have_content @mcount }
+		end
+
+		describe "pagination" do
+			before(:all) { 60.times { FactoryGirl.create(:micropost, user: user, content: "test") } }
+			after(:all)  { user.microposts.delete_all }
+
+			it { should have_selector('div.pagination') }
+		end
+
+	end
+
 end

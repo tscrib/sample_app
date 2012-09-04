@@ -113,6 +113,16 @@ describe "Authentication" do
 					before { delete micropost_path(FactoryGirl.create(:micropost)) }
 					specify { response.should redirect_to(signin_path) }
 				end
+
+				describe "delete links do not appear for other users" do
+					before do
+						FactoryGirl.create(:micropost, user: wrong_user, content: "Foo")
+					 	sign_in user
+						visit edit_user_path(wrong_user)
+					end
+
+					it { should_not have_link('delete', href: micropost_path(wrong_user)) }
+				end
 			end
 		end
 
