@@ -4,13 +4,16 @@
 	<aside class="span4">
 		<section>
 			<h1>
-				<%= gravatar_for @user, size: 40 %>
-				<%= @user.name %>
+				<%= render partial: 'shared/user_avatars', locals: { user: @user } %>			
 			</h1>
+		</section>
+		<section>
+			<%= render 'shared/stats' %>
 		</section>
 	</aside>
 
 	<div class="span8">
+		<%= render 'follow_form' if signed_in? %>
 		<% if @user.microposts.any? %>
 		<h3>Microposts (<%= @user.microposts.count %>)</h3>
 		<ol class="microposts">
