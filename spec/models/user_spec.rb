@@ -230,15 +230,7 @@ describe User do
   end
 
   # relationship tests
-  # needs work
   describe "relationship associations" do
-
-      # let(:relationship) { follower.relationships.build(followed_id: followed.id) }
-
-      # it "should destroy associated relationships" do  
-      #   follower.destroy
-      #   follower.relationships.find_by_followed_id(followed.id).should be_nil
-      # end
 
       describe "following" do
         let(:other_user) { FactoryGirl.create(:user) }    
@@ -261,7 +253,16 @@ describe User do
           it { should_not be_following(other_user) }
           its(:followed_users) { should_not include(other_user) }
         end
+
+        it "and destroying should destroy associated relationships" do  
+          relationships = @user.relationships
+          relationships.find_by_followed_id(other_user.id).should_not be_nil
+          
+          other_user.destroy
+          relationships.find_by_followed_id(other_user.id).should be_nil
+        end
       end
+
     end
 
 

@@ -19,8 +19,8 @@ describe "UserPages" do
 			visit users_path
 		end
 
-		it { should have_selector('title', text: 'All users') }
-		it { should have_selector('h1',    text: 'All users') }
+		it { should have_selector('title', text: 'All Users') }
+		it { should have_selector('h1',    text: 'All Users') }
 
 		describe "pagination" do
 
@@ -74,6 +74,8 @@ describe "UserPages" do
 
 		it { should have_selector('h1',    text: user.name) }
 		it { should have_selector('title', text: user.name) }
+		it { should have_link("0 following", href: following_user_path(user)) }
+        it { should have_link("0 followers", href: followers_user_path(user)) }
 
 		describe "microposts" do
 			it { should have_content(m1.content) }
@@ -128,6 +130,17 @@ describe "UserPages" do
 					before { click_button "Unfollow" }
 					it { should have_selector('input', value: 'Follow') }
 				end
+			end
+
+			describe "follower/following counts" do
+				let(:other_user) { FactoryGirl.create(:user) }
+				before do
+					other_user.follow!(user)
+					visit user_path(user)
+				end
+
+				it { should have_link("0 following", href: following_user_path(user)) }
+				it { should have_link("1 followers", href: followers_user_path(user)) }
 			end
 		end
 	end
@@ -242,7 +255,7 @@ describe "UserPages" do
 			end
 
 			it { should have_selector('title', text: full_title('Following')) }
-			it { should have_selector('h3', text: 'Following') }
+			it { should have_selector('h1', text: 'Following') }
 			it { should have_link(other_user.name, href: user_path(other_user)) }
 		end
 
@@ -253,7 +266,7 @@ describe "UserPages" do
 			end
 
 			it { should have_selector('title', text: full_title('Followers')) }
-			it { should have_selector('h3', text: 'Followers') }
+			it { should have_selector('h1', text: 'Followers') }
 			it { should have_link(user.name, href: user_path(user)) }
 		end
 	end
