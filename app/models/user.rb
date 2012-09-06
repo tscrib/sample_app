@@ -11,6 +11,7 @@
 #  remember_token  :string(255)
 #  admin           :boolean          default(FALSE)
 #
+require 'will_paginate/array'
 
 class User < ActiveRecord::Base
 	attr_accessible :email, :name, :password, :password_confirmation
@@ -55,6 +56,16 @@ class User < ActiveRecord::Base
 
 	def unfollow!(other_user)
 		relationships.find_by_followed_id(other_user.id).destroy
+	end
+
+	# Use case insensitive search when querying names
+	def self.search(search, page)
+		if search
+			@users=find(:all, conditions: ['name ILIKE ?', "%#{search}%"]).paginate(page: page)
+		else
+			@users=User.paginate(page: page)
+		end
+		
 	end
 
 
