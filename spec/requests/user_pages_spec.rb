@@ -60,12 +60,36 @@ describe "UserPages" do
 				page.should have_selector('li', text: user.name)
 			end
 		end
+
+		# My first successful tests! No tutorial help!
+		# Hoorah!
+		describe "search" do
+			before do
+				@search_user = User.new(name: "Example User", email: "user@example.com",
+    password: "foobar", password_confirmation: "foobar")
+				@search_user.save!
+				sign_in @search_user
+				visit users_path
+			end
+
+			it { should have_button( "Search" ) }
+			it { should have_field('search', type: 'text') }
+
+			before do
+				fill_in "search", with: "Example User"
+				click_button "Search"
+			end
+
+			it { should have_link(@search_user.name) }
+			it { should_not have_link(user.name) }
+
+		end
 	end
 
 	describe "signup page" do
 		before { visit signup_path }
 
-		it { should have_selector( 'h1', test: 'Sign Up' ) }
+		it { should have_selector( 'h1', text: 'Sign Up' ) }
 		it { should have_selector( 'title', text: full_title( 'Sign Up' ) ) }
 	end
 

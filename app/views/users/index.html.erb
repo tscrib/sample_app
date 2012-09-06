@@ -5,13 +5,12 @@
 
 <form action=<%= users_path%> method: 'get' do %>
 	<p>
-		<%= text_field_tag :search, params[:search] %>
-		<%= submit_tag "Search", name: nil %>
+		<%= text_field_tag :search, params[:search]%>
+		<%= submit_tag "Search", name: nil, class: "btn btn-large btn-primary" %>
 	</p>
 </form>
 
 
 <%= render partial: 'shared/user_list' %>
-
 
 
